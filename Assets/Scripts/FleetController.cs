@@ -1,5 +1,4 @@
-using System;
-using System.Collections;
+using UnityEngine.Events;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -30,12 +29,21 @@ public class FleetController : MonoBehaviour
     [SerializeField] LineRenderer lineRenderer;
     [SerializeField] Transform fleetRoot;
 
+    public UnityEvent onMove;
+    public UnityEvent<Vector3> onFire;
+    public UnityEvent<PointOfInterest> onPointOfInterestEvent;
+
     // Start is called before the first frame update
     void Start()
     {
         movementWaypoints = new List<Cell>();
         targetPosition = transform.position;
         currentCell = grid.GetCellAtPosition(transform.position);
+    }
+
+    public void Initialize()
+    {
+        transform.position = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
@@ -64,6 +72,12 @@ public class FleetController : MonoBehaviour
         {
             currentCell = nextWaypoint;
             movementWaypoints.RemoveAt(0);
+            onMove.Invoke();
+            var potentialPoI = currentCell.GetPointOfInterest();
+            if (potentialPoI != null)
+            {
+                onPointOfInterestEvent.Invoke(potentialPoI);
+            }
         }
     }
 

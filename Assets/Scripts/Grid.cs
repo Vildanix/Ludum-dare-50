@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -11,6 +9,10 @@ public class Grid : MonoBehaviour
     [SerializeField] int offsetX;
     [SerializeField] int offsetY;
     [SerializeField] Cell cellPrefab;
+    [SerializeField] int seedRandom;
+    [SerializeField, Range(0f, 1f)] float poiProbability = 0.1f;
+    [SerializeField, Range(0f, 1f)] float backgroundProbability = 0.2f;
+    [SerializeField] float randomNoiseOffset;
 
     int lastOffsetX;
     int lastOffsetY;
@@ -23,11 +25,19 @@ public class Grid : MonoBehaviour
         lastOffsetY = offsetY;
         InitializePool();
         UpdateMapCells();
+        Random.InitState(seedRandom);
+        randomNoiseOffset = Random.Range(0f, 1f);
     }
 
     private void InitializePool()
     {
         cellPoll = new ObjectPool<Cell>(CreateCell, OnTakeFromPool, OnReturnToPool, maxSize: width * height * 2);
+    }
+
+    public void Initialize()
+    {
+        lastOffsetX = offsetX = 0;
+        lastOffsetY = offsetY = 0;
     }
 
     private void Update()
@@ -93,7 +103,10 @@ public class Grid : MonoBehaviour
         var newCell = cellPoll.Get();
         newCell.transform.position = new Vector3(x, 0, y);
         newCell.name = $"Cell {x}, {y}";
-
+        newCell.InitContent(x * randomNoiseOffset,
+                            y * randomNoiseOffset,
+                            poiProbability,
+                            backgroundProbability);
         cellReferences.Add((x, y), newCell);
     }
 

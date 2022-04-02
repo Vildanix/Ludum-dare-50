@@ -60,8 +60,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationSpeed: 2
-  lowVisibilityMultiplier: 3
+  scannerVisibilityMultiplier: 3
   poiRef: {fileID: 0}
+  backgroundRef: {fileID: 0}
+  cellRenderer: {fileID: 789128107232825608}
+  lowVisibilityMat: {fileID: 2100000, guid: 2d058875f0642434daa906d341b37c1c, type: 2}
+  highVisibilityMat: {fileID: 2100000, guid: a727da8a5f303da409a5772ee9551322, type: 2}
+  poiVisibilityMat: {fileID: 2100000, guid: 0477db86780bb5b478e83dc652217a09, type: 2}
+  poiEventPrefabs:
+  - {fileID: -5604191117495499352, guid: dc8288c3bf3a5e942af8026ff9984b92, type: 3}
+  - {fileID: 2423364466544092296, guid: 85b23f14ad2515f46967c174cccf2f88, type: 3}
+  backgroundPrefabs:
+  - {fileID: 1969293985018518126, guid: 862013212deb3e14c8c0ae0e55bc259f, type: 3}
+  - {fileID: 1969293985018518126, guid: 41f60f04a6e95484199c6089a6041427, type: 3}
 --- !u!1 &1986479366028700900
 GameObject:
   m_ObjectHideFlags: 0
