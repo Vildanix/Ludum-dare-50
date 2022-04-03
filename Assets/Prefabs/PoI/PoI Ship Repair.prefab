@@ -4861,6 +4861,7 @@ MonoBehaviour:
   description: 
   Rewards:
   - {fileID: 11400000, guid: 79a537e42ad96184aa4701e467b854ff, type: 2}
+  - {fileID: 11400000, guid: f12841b5dcaec0041b60b482cd4f24ef, type: 2}
 --- !u!1001 &2383722502712511158
 PrefabInstance:
   m_ObjectHideFlags: 0

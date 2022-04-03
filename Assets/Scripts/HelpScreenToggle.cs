@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class HelpScreenToggle : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void ToggleObjectActivity()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        gameObject.SetActive(!gameObject.activeSelf);
     }
 }
