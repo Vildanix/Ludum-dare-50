@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class PointOfInterest : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] (int, int) poiCoordinates;
+    [SerializeField, TextArea] string description;
+
+    [SerializeField] List<EventReward> Rewards;
+
+    public void SetupEvent((int, int) coords)
     {
-        
+        poiCoordinates = coords;
     }
 
-    // Update is called once per frame
-    void Update()
+    public (int, int) GetCoordinates()
     {
-        
+        return poiCoordinates;
     }
+
+    public string GetDescription()
+    {
+        return description;
+    }
+
+    public IReadOnlyList<EventReward> GetRewards()
+    {
+        return Rewards.AsReadOnly();
+    }
+
 }

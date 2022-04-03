@@ -9,7 +9,7 @@ public class GameController : MonoBehaviour
     [SerializeField] int score = 0;
 
     public UnityEvent onNewGame;
-    public UnityEvent onGameOver;
+    public UnityEvent<string> onGameOver;
 
     public void StartGame()
     {
@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour
     public void EndGame()
     {
         isGameOver = true;
-        onGameOver.Invoke();
+        onGameOver.Invoke(score.ToString());
     }
 
     public void AddScore(int score)

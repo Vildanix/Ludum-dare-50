@@ -4864,6 +4864,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97b8f5e3143f511488c6fe382ad89f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  description: Mining field to resuply energy for movement
+  Rewards:
+  - {fileID: 11400000, guid: 2a29ec78e15038a43b5cd8ab2203ad64, type: 2}
 --- !u!1 &1969293985253095197
 GameObject:
   m_ObjectHideFlags: 0

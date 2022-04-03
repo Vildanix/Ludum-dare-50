@@ -70,9 +70,12 @@ MonoBehaviour:
   poiEventPrefabs:
   - {fileID: -5604191117495499352, guid: dc8288c3bf3a5e942af8026ff9984b92, type: 3}
   - {fileID: 2423364466544092296, guid: 85b23f14ad2515f46967c174cccf2f88, type: 3}
+  - {fileID: 2423364466544092296, guid: 8482ff38e23e3c3438d3f06a4ba1b6af, type: 3}
+  - {fileID: 2423364466544092296, guid: d97dfbf3939d20f47bffba53c519505c, type: 3}
   backgroundPrefabs:
   - {fileID: 1969293985018518126, guid: 862013212deb3e14c8c0ae0e55bc259f, type: 3}
   - {fileID: 1969293985018518126, guid: 41f60f04a6e95484199c6089a6041427, type: 3}
+  - {fileID: 1969293985018518126, guid: b6436e0f32db44542a32392fdd6ccd99, type: 3}
 --- !u!1 &1986479366028700900
 GameObject:
   m_ObjectHideFlags: 0

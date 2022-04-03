@@ -32,6 +32,8 @@ public class Cell : MonoBehaviour
     [SerializeField] List<PointOfInterest> poiEventPrefabs;
     [SerializeField] List<GameObject> backgroundPrefabs;
 
+    static HashSet<(int, int)> collectedPoIs = new HashSet<(int, int)>();
+
     private void Start()
     {
         playerFleet = GameObject.FindGameObjectWithTag("Player")?.GetComponent<FleetController>();
@@ -49,6 +51,11 @@ public class Cell : MonoBehaviour
         this.pool = pool;
     }
 
+    public static void InitializePointsOfInteres()
+    {
+        collectedPoIs = new HashSet<(int, int)>();
+    }
+
     private void Update()
     {
         UpdateAnimationTimer();
@@ -58,13 +65,12 @@ public class Cell : MonoBehaviour
         HandleCellRemoval();
     }
 
-    public void InitContent(float x, float y, float poiProbability, float backgroundProbability)
+    public void InitContent(int x, int y, float poiProbability, float backgroundProbability)
     {
-        float localProbability = Random.Range(0f, 1f); // Mathf.PerlinNoise(x, y) TODO: User noise function to persist point of interest in visited areas
+        float localProbability = Mathf.PerlinNoise(x / 2f, y / 2f);
         if (poiRef)
         {
-            Destroy(poiRef.gameObject);
-            poiRef = null;
+            DestroyPoI();
         }
 
         if (backgroundRef)
@@ -73,10 +79,11 @@ public class Cell : MonoBehaviour
             backgroundRef = null;
         }
 
-        if (localProbability < poiProbability)
+        if (localProbability < poiProbability && !collectedPoIs.Contains((x, y)))
         {
             var poiTemplateIndex = Random.Range(0, poiEventPrefabs.Count);
             poiRef = Instantiate(poiEventPrefabs[poiTemplateIndex], transform);
+            poiRef.SetupEvent((x, y));
         }
         else if (localProbability < backgroundProbability)
         {
@@ -85,10 +92,26 @@ public class Cell : MonoBehaviour
         }
     }
 
+    private void DestroyPoI()
+    {
+        Destroy(poiRef.gameObject);
+        poiRef = null;
+    }
+
     public PointOfInterest GetPointOfInterest()
     {
-        return poiRef;
+        if (poiRef == null) return null;
+        var poi = poiRef;
+        DestroyPoI();
+        collectedPoIs.Add(poi.GetCoordinates());
+        return poi;
     }
+
+    public bool HasPointOfInterest()
+    {
+        return poiRef != null;
+    }
+
 
     private void HandleVisibility()
     {

@@ -24,31 +24,46 @@ public class FleetController : MonoBehaviour
     Vector3 targetPosition;
     Cell currentCell;
     List<Cell> movementWaypoints;
+    bool isGamePaused = false;
 
     [Header("Child references")]
     [SerializeField] LineRenderer lineRenderer;
     [SerializeField] Transform fleetRoot;
 
-    public UnityEvent onMove;
+    public UnityEvent onMoveStep;
+    public UnityEvent onMoveCommand;
     public UnityEvent<Vector3> onFire;
     public UnityEvent<PointOfInterest> onPointOfInterestEvent;
 
-    // Start is called before the first frame update
     void Start()
     {
         movementWaypoints = new List<Cell>();
         targetPosition = transform.position;
-        currentCell = grid.GetCellAtPosition(transform.position);
+        currentCell = null;
     }
 
     public void Initialize()
     {
+        isGamePaused = false;
         transform.position = new Vector3(0, 0, 0);
+        currentCell = null;
+        movementWaypoints = new List<Cell>();
     }
 
-    // Update is called once per frame
+    public void PauseGame()
+    {
+        isGamePaused = true;
+    }
+
     void Update()
     {
+        if (isGamePaused) return;
+        if (currentCell == null)
+        {
+            currentCell = grid.GetCellAtPosition(transform.position);
+            return;
+        }
+
         HandleMovementSelection();
         HandleMovementAnimation();
         HandleVisibilityChange();
@@ -62,6 +77,7 @@ public class FleetController : MonoBehaviour
         }
     }
 
+    #region Movement handling
     private void HandleMovementAnimation()
     {
         if (movementWaypoints == null || movementWaypoints.Count == 0) return;
@@ -72,11 +88,10 @@ public class FleetController : MonoBehaviour
         {
             currentCell = nextWaypoint;
             movementWaypoints.RemoveAt(0);
-            onMove.Invoke();
-            var potentialPoI = currentCell.GetPointOfInterest();
-            if (potentialPoI != null)
+            onMoveStep.Invoke();
+            if (currentCell.HasPointOfInterest())
             {
-                onPointOfInterestEvent.Invoke(potentialPoI);
+                onPointOfInterestEvent.Invoke(currentCell.GetPointOfInterest());
             }
         }
     }
@@ -96,6 +111,7 @@ public class FleetController : MonoBehaviour
                 if (path != null && Input.GetMouseButtonDown(0))
                 {
                     movementWaypoints = path;
+                    onMoveCommand.Invoke();
                 }
             } else
             {
@@ -134,4 +150,5 @@ public class FleetController : MonoBehaviour
             transform.position += direction * Time.deltaTime * movementSpeed;
         }
     }
+    #endregion
 }
